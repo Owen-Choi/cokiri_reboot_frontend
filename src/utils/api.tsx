@@ -14,9 +14,10 @@ export const injectStore = _store => {
 
 const Api = axios.create({
     // baseURL: "https://f3f-cokiri.site/",
-    // 끝에 슬래쉬 넣어줘야 하나..?
     baseURL: process.env.REACT_APP_BACKEND_LOCAL_URL,
 });
+
+const base = process.env.REACT_APP_BACKEND_LOCAL_URL;
 
 const sourceRequest: any = {};
 
@@ -61,40 +62,24 @@ Api.interceptors.response.use(
         //accessToken이 만료가 돼서 401이 떴을때
         if (err.response && err.response.status === 401) {
             switch (err.response.status) {
-                /**
-                 * 401 : UNAUTORIZED 권한이 없음
-                 * 예외 처리 시나리오
-                 * 1. accessToken이 만료됐을때
-                 * 2. refreshToken도 만료됐을때
-                 * 3. 로그인이 필요한 서비스인데 로그인을 하지 않았을 때
-                 */
                 case 401: {
                     const accessToken = store.getState().jwtTokenReducer.accessToken;
                     const jsonObj = {"accessToken": accessToken};
-                    //유저 로그인 상태일때
-                    //TODO: 리팩토링, test 검증, 추후에 만료기간을 확인을 하고 만료기간이 임박했을때 미리 reissue를 거치는 방법도 생각중.. 근데 이건 401 오류에서 처리를 할 수 없어 보류
                     if (accessToken) {
-                        //accessToken 만료가 되면 백엔드에 있는 refreshToken으로 accessToken을 다시 받아온다.
                         try {
-                            const data = await axios.post("https://f3f-cokiri.site/auth/reissue", jsonObj);
+                            const data = await axios.post(base + "/auth/reissue", jsonObj);
                             const jwtToken = data.data.accessToken;
-                            //reissue가 성공하여 accessToken을 받아왔을때(reissue가 200번일때)
                             if (jwtToken) {
                                 store.dispatch(setToken(data.data));
                                 config.headers.Authorization = `Bearer ${jwtToken}`;
-                                // alert("accessToken의 만료기간이 지나서 백엔드 accessToken의 검증실패, reissue로 refresh 토큰의 만료기간이 지나지 않아 refresh token을 활용하여 accessToken 재발급 성공")
-                                //성공했으니 err를 반환하지 않고 config 자체를 반환
                                 console.log(axios(config));
                                 return axios(config);
-                                // return await Api.request(err.config);
                             }
-                        }//reissue가 실패했을때 ( refreshToken도 만료가 됐을때)
+                        }
                         catch (err) {
                             console.log("나중에 이부분확인")
                             console.log(err);
                             console.log("refreshToken이 만료돼서 accesToken을 재발급할수없음")
-                            // alert("accessToken의 만료기간이 지나서 백엔드 accessToken의 검증실패, reissue로 refresh token을 활용하여 accessToken 재발급 시도," +
-                            //     "refresh token의 만료기간도 지나 재로그인 요청")
                             history.push('/login');
                         }
                     } else { //로그인 되지 않은 상태일때
