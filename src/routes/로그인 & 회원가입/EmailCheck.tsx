@@ -13,8 +13,9 @@ import {Rootstate} from "../../index";
 
 const EmailCheck = () => {
 
+    const baseUri = process.env.REACT_APP_BACKEND_LOCAL_URL;
+    console.log(baseUri)
     const cx = classNames.bind(styles)
-
     const navigate = useNavigate();
     const {state} = useLocation();
     const jsonEmail:object = {"email" : state.email}
@@ -25,7 +26,8 @@ const EmailCheck = () => {
 
     async function SignUpData() {
         try {
-            const res = await axios.post("https://f3f-cokiri.site/auth/signup", userInfo);
+            // const res = await axios.post("https://f3f-cokiri.site/auth/signup", userInfo);
+            const res = await axios.post(baseUri + "/auth/signup", userInfo);
 
             const result = {
                 status: res.status + "-" + res.statusText,
@@ -47,7 +49,8 @@ const EmailCheck = () => {
     async function CodeConfirm(code:object){
         console.log(code)
         try {
-            const res = await axios.post("https://f3f-cokiri.site/auth/codeConfirm", code);
+            // const res = await axios.post("https://f3f-cokiri.site/auth/codeConfirm", code);
+            const res = await axios.post( baseUri+ "/auth/codeConfirm", code);
 
             const result = {
                 status: res.status + "-" + res.statusText,
