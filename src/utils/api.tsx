@@ -1,9 +1,3 @@
-/**
- * interceptor 사용 이유 :
- * token을 모든 api 호출마다 반복적으로 header에 넣어주고, 만료가 되면 예외 처리를 해야한다.
- * 이걸 일반화시키기 위해 api를 호출할때마다 이 파일에서 설정한 로직을 거친다고 생각하면 된다.
- */
-
 import axios, {AxiosRequestConfig} from 'axios';
 import {history} from "../index";
 import {setToken} from "../store/jwtTokenReducer";
@@ -19,7 +13,9 @@ export const injectStore = _store => {
 }
 
 const Api = axios.create({
-    baseURL: "https://f3f-cokiri.site/",
+    // baseURL: "https://f3f-cokiri.site/",
+    // 끝에 슬래쉬 넣어줘야 하나..?
+    baseURL: process.env.REACT_APP_BACKEND_LOCAL_URL,
 });
 
 const sourceRequest: any = {};
@@ -41,24 +37,6 @@ Api.interceptors.request.use(
         } catch (err) {
             console.error('[_axios.interceptors.request] config : ' + err);
         }
-
-        //post 메서드일때 중복 방지
-        // if (config.method === 'post') {
-        //     const key = `${config.url}$${JSON.stringify(config.data)}`;
-        //     //스크랩일때만 중복 허용
-        //     if(!key.includes("/user/scrap$"))
-        //     {
-        //         console.log("hi")
-        //         if (sourceRequest[key]) {
-        //             console.log("중복으로 요청 취소 ")
-        //             throw new Error('Automatic cancellation'); // If the request exists cancel
-        //         } else {
-        //             sourceRequest[key] = new Date(); // Store request key
-        //         }
-        //     }
-        //     console.log(key);
-        // }
-
         return config;
     },
 
