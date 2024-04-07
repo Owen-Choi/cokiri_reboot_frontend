@@ -1,33 +1,26 @@
-import React, {useState, useEffect, useMemo, useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import styles from "../../styles/loginAndSignup/Login.module.scss"
 import loginImg from "../../img/cokkiriLogo.png"
 import {useNavigate} from "react-router-dom";
 import TextInput from "../../component/common/TextInput";
 import Button from "../../component/common/Button";
-import axios from "axios";
-import Modal from "./NeighborModal"
-import GoogleButton from "./GoogleButton.js"
-import { useGoogleLogin } from '@react-oauth/google'
 import {useDispatch, useSelector} from "react-redux";
-// import {gapi} from 'gapi-script';
-import {setToken, deleteToken, logoutToken} from "../../store/jwtTokenReducer";
+import {setToken} from "../../store/jwtTokenReducer";
 import {Rootstate} from "../../index";
-import Api from "../../utils/api"
+import {setOnelineIntro, setPW, setUserInfo,} from "../../store/userInfoReducer";
 import {
-    setUserInfo,
-    setUserProfile,
-    deleteUserInfo,
-    setUserNick,
-    setUserName,
-    setOnelineIntro, logoutUserInfo, setPW,
-} from "../../store/userInfoReducer";
-import {
-    parcelAddress1, parcelAddress2,
-    setAddress1,
-    setAddress2,
-    setAddressName1, setAddressName2, setLat1, setLat2, setLng1, setLng2,
-    setUserAddressInfo1, setUserAddressInfo2
+    parcelAddress1,
+    parcelAddress2,
+    setAddressName1,
+    setAddressName2,
+    setLat1,
+    setLat2,
+    setLng1,
+    setLng2,
+    setUserAddressInfo1,
+    setUserAddressInfo2
 } from "../../store/userAddressInfoReducer";
+import axios from "axios";
 
 const Login = () => {
     //성공기원
@@ -51,6 +44,7 @@ const Login = () => {
     const [userInfo, setuserInfo] = useState<UserInfo>(null);
     const [postResult, setPostResult] = useState(null);
     const navigate = useNavigate();
+    const base = process.env.REACT_APP_BACKEND_LOCAL_URL;
 
     const signInClick = () => {
         navigate(`/signup`)
@@ -72,13 +66,13 @@ const Login = () => {
     async function postLoginData() {
             //interceptor를 사용한 방식 (header에 token값 전달)
         try{
-            const res = await Api.post('/login',userInfo);
+            // 로그인 시에는 Api, 즉 interceptor를 사용하면 안된다. accessToken과 refreshToken이 모두 만료되면
+            // 무한 루프에 빠진다.
+            const res = await axios.post(base + '/login',userInfo);
             console.log(res)
             const accessToken = res.data;
             //jwt 토큰 redux에 넣기
             const jwtToken = accessToken.tokenInfo;
-            console.log(jwtToken)
-            console.log("바뀐address",res.data.userInfo.address[1])
             dispatch(setToken(jwtToken));
             dispatch(setUserInfo(res.data.userInfo.userDetail))
             dispatch(setOnelineIntro(res.data.userInfo.userDetail.description))
@@ -97,8 +91,6 @@ const Login = () => {
                 dispatch(setLng2(res.data.userInfo.address[1].longitude))
             }
 
-            // dispatch(setAddress1(res.data.userInfo.address[0]))
-            // dispatch(setAddress2(res.data.userInfo.address[1]))
             console.log("store",store)
             alert("로그인 성공")
             console.log("비밀번호",store.userInfoReducer.password)
@@ -110,66 +102,11 @@ const Login = () => {
                 alert("로그인에 실패하였습니다." + `\n` +
                     "아이디 혹은 비밀번호를 다시 확인해주세요")
             }
-            // console.log(store.jwtTokenReducer);
-            // console.log(store.jwtTokenReducer.accessToken);
-            // console.log(store.jwtTokenReducer.authenticated);
-            // console.log(store.jwtTokenReducer.accessTokenExpiresIn);
     }
     const handleClick= () => {
         console.log(userInfo);
         postLoginData();
     }
-    const googleLogin = useGoogleLogin({
-        onSuccess: async response => {
-            try {
-                const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-
-                    headers: {
-                        "Authorization": `Bearer ${response.access_token}`
-                    }
-                })
-                const data = res.data
-                const googleUserInfo1 ={
-                    token :response.access_token
-                }
-                console.log("유저정보",googleUserInfo1)
-                const res1 = await axios.post("https://f3f-cokiri.site/auth/social_login/google", googleUserInfo1)
-                console.log("res2...", res1)
-                const jwtToken = res1.data.tokenInfo;
-                console.log("토큰",jwtToken)
-                console.log("구글유저정보", res1.data.userInfo.userDetail)
-                dispatch(logoutToken());
-                dispatch(setToken(jwtToken));
-                dispatch(logoutUserInfo());
-                // dispatch(setUserInfo(res.data.userInfo))
-                dispatch(setUserInfo(res1.data.userInfo.userDetail));
-                dispatch(setOnelineIntro(res1.data.userInfo.userDetail.description))
-
-                if(res1.data.userInfo.address[0]!=null){
-                    dispatch(setUserAddressInfo1(res1.data.userInfo.address[0].id))
-                    dispatch(setAddressName1(res1.data.userInfo.address[0].addressName))
-                    dispatch(parcelAddress1(res1.data.userInfo.address[0].postalAddress))
-                    dispatch(setLat1(res1.data.userInfo.address[0].latitude))
-                    dispatch(setLng1(res1.data.userInfo.address[0].longitude))
-                }
-                if(res1.data.userInfo.address[1]!=null){
-                    dispatch(setUserAddressInfo2(res1   .data.userInfo.address[1].id))
-                    dispatch(setAddressName2(res1.data.userInfo.address[1].addressName))
-                    dispatch(parcelAddress2(res1    .data.userInfo.address[1].postalAddress))
-                    dispatch(setLat2(res1.data.userInfo.address[1].latitude))
-                    dispatch(setLng2(res1.data.userInfo.address[1].longitude))
-                }
-                // dispatch(setUserNick(res1.data.userInfo.nickname))//얘는 뱉는거로
-                // dispatch(setUserName(res1.data.userInfo.userName))
-                // dispatch(setUserProfile(res1.data.userInfo.imageUrl))
-                // dispatch(setOnelineIntro(res1.data.userInfo.description))
-                navigate(`/`)
-                }
-            catch (err) {
-                console.log(err)
-            }
-        }
-    });
 
     const findId = () => {
         navigate(`/findid`)
@@ -182,11 +119,6 @@ const Login = () => {
 
     return (
         <><div className={styles.box}>
-            {/*{isOpenModal && (*/}
-            {/*    <Modal onClickToggleModal={onClickToggleModal}>*/}
-            {/*        <embed type="text/html" src={url} width="800" height="608"/>*/}
-            {/*    </Modal>*/}
-            {/*)}*/}
             <div className={styles.loginAllContent}>
                 <section className={styles.header}>
                     <img src={loginImg} className={styles.loginImg}></img>
@@ -218,7 +150,7 @@ const Login = () => {
                 </section>
                 {/*<Button className={"white"} onClick={()=>{  onClickToggleModal(); }} content={"구글 로그인"}/>*/}
                 {/*@ts-ignore*/}
-                <Button className={"white"} onClick={googleLogin} content={"구글 로그인"}/>
+                {/*<Button className={"white"} onClick={googleLogin} content={"구글 로그인"}/>*/}
             </div>
         </div>
         </>

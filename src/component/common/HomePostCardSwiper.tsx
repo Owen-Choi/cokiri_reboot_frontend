@@ -75,9 +75,10 @@ const HomePostCardSwiper = (postProps) => {
                       postContent={post.content} wishCategory={post.wishCategory}
                       messageRoomCount={post.messageRoomCount}
                       price={post.price}
+                      thumbnail={post.thumbnail}
                       onClick={() => {
                         onClickPost(post);
-                      }} thumbnail={post.thumbnail} />
+                      }} />
               </SwiperSlide>
             ))
           }

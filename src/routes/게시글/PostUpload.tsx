@@ -2,13 +2,11 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../../styles/loginAndSignup/PostUpload.module.css';
 import { useNavigate } from 'react-router-dom';
 import photo from '../../img/add.png';
-import Tags from '@yaireo/tagify/dist/react.tagify'; // React-wrapper file
-// import "@yaireo/tagify/src/tagify.scss"
+import Tags from '@yaireo/tagify/dist/react.tagify';
 import '../../styles/scss/main.scss';
 import Api from '../../utils/api';
 import { Rootstate } from '../../index';
 import { useDispatch, useSelector } from 'react-redux';
-//https://github.com/yairEO/tagify 에서 tagify 참조
 import { NumericFormat } from 'react-number-format';
 import Select from 'react-select';
 import Modal from '../로그인 & 회원가입/NeighborModal';
@@ -55,55 +53,28 @@ const PostUpload = () => {
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);
 
-  // const categories: string[] =
-  //     ['전체', '도서', '생활가전', '의류', '유아도서', '유아동', '여성의류', '남성의류', '뷰티/미용', '스포츠/레저',
-  //         '티켓/교환권', '식물', '가구', '반려동물용품', '가공용품', '취미/게임', '인테리어', '생활/주방']
-
   interface Category {
     name: string;
   }
 
   const categories: Category[] =
     [
-      { name: '도서' },
-      { name: '식품' },
-      { name: '티켓/교환권' },
-      { name: '의류' },
-      { name: '서비스/기술' },
-      { name: '유아동용품' },
-      { name: '운동용품' },
-      { name: '가구' },
-      { name: '뷰티/미용' },
-      { name: '반려동물용품' },
-      { name: '식물' },
-      { name: '취미/게임' },
-      { name: '수집품' },
-      { name: '인테리어' },
-      { name: '생활/주방' },
-      { name: '전자기기' },
-      { name: '기타' },
+      { name: '도서' }, { name: '식품' }, { name: '티켓/교환권' },
+      { name: '의류' }, { name: '서비스/기술' }, { name: '유아동용품' },
+      { name: '운동용품' }, { name: '가구' }, { name: '뷰티/미용' },
+      { name: '반려동물용품' }, { name: '식물' }, { name: '취미/게임' },
+      { name: '수집품' }, { name: '인테리어' }, { name: '생활/주방' },
+      { name: '전자기기' }, { name: '기타' },
     ];
 
   const categories2: Category[] =
     [
-      { name: '도서' },
-      { name: '식품' },
-      { name: '티켓/교환권' },
-      { name: '의류' },
-      { name: '서비스/기술' },
-      { name: '유아동용품' },
-      { name: '운동용품' },
-      { name: '가구' },
-      { name: '뷰티/미용' },
-      { name: '반려동물용품' },
-      { name: '식물' },
-      { name: '취미/게임' },
-      { name: '수집품' },
-      { name: '인테리어' },
-      { name: '생활/주방' },
-      { name: '전자기기' },
-      { name: '기타' },
-      { name: '상관없음' },
+      { name: '도서' }, { name: '식품' }, { name: '티켓/교환권' },
+      { name: '의류' }, { name: '서비스/기술' }, { name: '유아동용품' },
+      { name: '운동용품' }, { name: '가구' }, { name: '뷰티/미용' },
+      { name: '반려동물용품' }, { name: '식물' }, { name: '취미/게임' },
+      { name: '수집품' }, { name: '인테리어' }, { name: '생활/주방' },
+      { name: '전자기기' }, { name: '기타' }, { name: '상관없음' },
     ];
 
   const navigate = useNavigate();
@@ -129,14 +100,6 @@ const PostUpload = () => {
     // pattern : /^.{0,9}$/,
   };
 
-  const onChangePrice = (e, value) => {
-    const inputPrice = e.target.value;
-
-    setUploadData((prevState) => {
-      return { ...prevState, price: inputPrice };
-    });
-  };
-
   const onChangeContent = (e) => {
     const inputContent = e.target.value;
     const str_arr = inputContent.split('\n');
@@ -145,14 +108,6 @@ const PostUpload = () => {
     setUploadData((prevState) => {
       return { ...prevState, content: inputContent };
     });
-  };
-
-  const onChangeTag = (e) => {
-    const inputTag = e.target.value;
-  };
-
-  const signUpButtonClick = () => {
-    navigate(`/signup/emailcheck`);
   };
 
   // on tag add/edit/remove
@@ -317,22 +272,6 @@ const PostUpload = () => {
       return { ...prevState, price: value };
     });
   };
-
-  // const deleteImg = (index) => {
-  //   setShowImages((prevState) => {
-  //     prevState.splice(index, 1);
-  //     return [...prevState];
-  //   });
-  //
-  //   const newPhotoData = new FormData();
-  //   showImages.forEach((image, i) => {
-  //     if (i !== index) {
-  //       newPhotoData.append('imageFiles', image);
-  //     }
-  //   });
-  //
-  //   setPhotoData(newPhotoData);
-  // };
 
 
   const deleteImg = (index) => {
