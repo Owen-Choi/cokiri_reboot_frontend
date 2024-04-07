@@ -82,17 +82,6 @@ const MyPage = () => {
 
   //TODO: 의성) state로 하는게 아니라 useParams 로 하는거임 /289 뒤에 id를 검증해야지
 
-  // useEffect(() => {
-  //     if (state == null || state == info.id) {
-  //         getMyPostList();
-  //     }
-  // }, [])
-  // useEffect(() => {
-  //     if (state != null && state != info.id) {
-  //         getUserPost_2();
-  //     }
-  // }, [])
-
   useEffect(() => {
     if (paramsId === info.id) {
       getMyPostList();
@@ -127,26 +116,8 @@ const MyPage = () => {
     <div className={styles.wrap}>
 
       <div className={styles.MyPage}>
-        {/*<div className={styles.menu}>*/}
-        {/*    <button className={`${styles["post"+(tab1 ==="curr"? "" : "active")]}`}  onClick={() =>{ setDealTab('curr'); navigate('/mypage');}}>게시글</button>*/}
-        {/*    <button className={styles.zzimactive} onClick={()=>{navigate('/mypage/zzim')}}>관심 상품</button>*/}
-        {/*</div>*/}
         <div className={styles.container}>
           {
-
-            // state == null ?
-            //   postList.reverse().map((SingleObject: Object) => (
-            //     <Card className={'forMypage'} postTitle={SingleObject['title']}
-            //           like={SingleObject['likeCount']} wishCategory={SingleObject['wishCategory']}
-            //           thumbnail={SingleObject['thumbNail']}
-            //           onClick={() => {
-            //             onClickPost(SingleObject);
-            //           }} />
-            //   ))
-            //
-            //
-            //   :
-
             paramsId === info.id ?
               postList.reverse().map((SingleObject: Object) => (
                 <Card className={'forMypage'} postTitle={SingleObject['title']}
@@ -164,18 +135,9 @@ const MyPage = () => {
                         onClickPost(SingleObject);
                       }} />
               ))
-
-            // postList.map((post)=>(
-            //     <Card  className={"forMypage"} postTitle={post['title']} like={20} wishCategory={postList['wishCategory']}
-            //            onClick={() => {onClickPost(post)}}/>
-            // ))
-            // https://velog.io/@op032/%EB%A0%8C%EB%8D%94%EB%A7%81-%EB%AC%B8%EC%A0%9C%EB%A5%BC-%ED%95%B4%EA%B2%B0%ED%95%B4%EB%B3%B4%EC%9E%90-TypeError-Cannot-read-property-title-of-undefined
           }
         </div>
-
       </div>
-
-      {/*<Footer/>*/}
     </div>
 
   );

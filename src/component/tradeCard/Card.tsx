@@ -37,13 +37,11 @@ const TradeCard = (props1: props) => {
     <>
       <div className={styles.postItem}>
         {
-          ((props1.thumbnail != null && props1.thumbnail.includes('https://s3.ap-northeast-2.amazonaws.com')) ?
+          ((props1.thumbnail != null && props1.thumbnail.includes(process.env.REACT_APP_S3_URL_PREFIX)) ?
               <img className={styles.postImage} src={props1.thumbnail} /> :
               <img className={styles.postImage} src={tradeEx} />
           )
         }
-        {/*<img className={styles.postImage} src={props1.thumbnail}/>*/}
-        {/*<img className={styles.postImage} src={tradeEx}/>*/}
         <p className={styles.postTitle}>{props1.postTitle}</p>
         <p className={styles.postPrice}>{props1.price}원</p>
         <p className={styles.postContent}>{props1.postContent}</p>
@@ -55,8 +53,6 @@ const TradeCard = (props1: props) => {
             <span className={styles.commmentNum}>{props1.messageRoomCount}</span>
           </div>
           <div className={styles.detail2}>
-            {/*<FaExchangeAlt className={styles.tradeImage} />*/}
-            {/*<RiExchangeBoxLine className={styles.tradeImage} />*/}
             <FaExchangeAlt className={styles.tradeImage} />
             <span className={styles.tradestring}>{props1.wishCategory}</span>
           </div>
