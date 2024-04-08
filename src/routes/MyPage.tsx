@@ -31,11 +31,7 @@ const MyPage = () => {
   const params = useParams();
   // console.log(params)
   let paramsId = parseInt(params.id);
-  console.log(paramsId);
-
-  console.log('포스트아이디 이거로 넘어온건지 확인', state);
   const [otherPost, setOtherPostList] = useState(null);
-  console.log('다른 유저 게시글 정보222222222', otherPost);
 
   const detail = useSelector((state: Rootstate) => {
     return state.postDetailReducer;
@@ -48,8 +44,6 @@ const MyPage = () => {
 
   function setDealTab(tab) {
     setTab(tab);
-    console.log(tab1);
-    // return tab
   }
 
 
