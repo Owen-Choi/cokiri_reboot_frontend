@@ -67,7 +67,7 @@ const MypageCard = (props1: props) => {
     <>
       <div className={styles.postItem}>
         {
-          ((props1.thumbnail != null && props1.thumbnail.includes('https://s3.ap-northeast-2.amazonaws.com')) ?
+          ((props1.thumbnail != null && props1.thumbnail.includes(process.env.REACT_APP_S3_URL_PREFIX)) ?
               <img className={styles.postImage} src={props1.thumbnail} /> :
               <img className={styles.postImage} src={tradeEx} />
           )
