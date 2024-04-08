@@ -212,19 +212,23 @@ const SignUp = () => {
 
     //이메일 유효성 검사를 통과했을때, (형식에 맞는 경우 true 리턴)
     if (emailValidationCheck.test(inputEmail)) {
-      //@gmail.com일때
-      if (inputEmail.includes('@gmail.com')) {
-        setValidationCheck((prevState) => {
-          return { ...prevState, emailCheck: 'gmail', emailCheckBoolean: false };
-        });
-      } else { //일반 이메일일때
-        //이메일 중복체크 백엔드 통신
-        //string인 inputEmail을 json형태의 객체로 변환
-        let jsonObj = { 'email': inputEmail };
-        //변환한 json 객체로 이메일 중복체크
-        CheckEmailDuplicated(jsonObj);
-        // dispatch(setEmail(inputEmail))
-      }
+      // TODO gmail 간편 로그인을 없앴기 때문에 아래 코드는 실행되어선 안된다.
+      // //@gmail.com일때
+      // if (inputEmail.includes('@gmail.com')) {
+      //   setValidationCheck((prevState) => {
+      //     return { ...prevState, emailCheck: 'gmail', emailCheckBoolean: false };
+      //   });
+      // }
+      // else { //일반 이메일일때
+      //   //이메일 중복체크 백엔드 통신
+      //   //string인 inputEmail을 json형태의 객체로 변환
+      //   let jsonObj = { 'email': inputEmail };
+      //   //변환한 json 객체로 이메일 중복체크
+      //   CheckEmailDuplicated(jsonObj);
+      //   // dispatch(setEmail(inputEmail))
+      // }
+      let jsonObj = { 'email': inputEmail };
+      CheckEmailDuplicated(jsonObj);
     } else //이메일 유효성 검사 실패했을때
     {
       setValidationCheck((prevState) => {
@@ -394,10 +398,10 @@ const SignUp = () => {
           ||
           (validationCheck.emailCheck === 'valid' &&
             <Message validCheck={validationCheck.emailCheckBoolean} content={'✔ 사용 가능한 이메일입니다.'} />)
-          ||
-          (validationCheck.emailCheck === 'gmail' &&
-            <Message validCheck={validationCheck.emailCheckBoolean}
-                     content={'❌ gmail 계정은 Google 로그인을 이용해주세요.'} />)
+          //||
+          // (validationCheck.emailCheck === 'gmail' &&
+          //   <Message validCheck={validationCheck.emailCheckBoolean}
+          //            content={'❌ gmail 계정은 Google 로그인을 이용해주세요.'} />)
           ||
           (validationCheck.emailCheck === 'invalid' &&
             <Message validCheck={validationCheck.emailCheckBoolean} content={'❌ 유효하지 않은 이메일입니다.'} />)
