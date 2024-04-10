@@ -14,7 +14,7 @@
     "@types/react-dom": "^18.0.9",
     "@types/react-redux": "^7.1.24",
     "@types/yaireo__tagify": "^4.18.0",
-    "@yaireo/tagify": "^3.6.8",
+    "@yaireo/tagify": "^4.15.2",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
     "classnames": "^2.3.2",
