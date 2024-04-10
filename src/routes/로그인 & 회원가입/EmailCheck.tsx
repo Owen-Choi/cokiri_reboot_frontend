@@ -13,7 +13,8 @@ import {Rootstate} from "../../index";
 
 const EmailCheck = () => {
 
-    const baseUri = process.env.REACT_APP_BACKEND_LOCAL_URL;
+    // const baseUri = process.env.REACT_APP_BACKEND_LOCAL_URL;
+    const baseUri = process.env.REACT_APP_BACKEND_URL;
     console.log(baseUri)
     const cx = classNames.bind(styles)
     const navigate = useNavigate();
