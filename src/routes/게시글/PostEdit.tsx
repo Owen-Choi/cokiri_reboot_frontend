@@ -3,6 +3,7 @@ import styles from '../../styles/loginAndSignup/PostUpload.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import photo from '../../img/add.png';
 import Tags from '@yaireo/tagify/dist/react.tagify'; // React-wrapper file
+// import Tags from '@yaireo/tagify/dist/tagify.min';
 // import "@yaireo/tagify/src/tagify.scss"
 import '../../styles/scss/main.scss';
 import Api from '../../utils/api';
