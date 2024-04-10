@@ -9,6 +9,7 @@ import talk from '../img/talk.png';
 import { Rootstate } from '../index';
 import { useDispatch, useSelector } from 'react-redux';
 import Tags from '@yaireo/tagify/dist/react.tagify';
+// import Tags from '@yaireo/tagify/dist/tagify.min';
 import { changePostRefreshState } from '../store/refreshReducer';
 import { BsSearch } from 'react-icons/bs';
 

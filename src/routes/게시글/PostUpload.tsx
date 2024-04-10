@@ -3,6 +3,7 @@ import styles from '../../styles/loginAndSignup/PostUpload.module.css';
 import { useNavigate } from 'react-router-dom';
 import photo from '../../img/add.png';
 import Tags from '@yaireo/tagify/dist/react.tagify';
+// import Tags from '@yaireo/tagify/dist/tagify.min';
 import '../../styles/scss/main.scss';
 import Api from '../../utils/api';
 import { Rootstate } from '../../index';
@@ -113,8 +114,9 @@ const PostUpload = () => {
   // on tag add/edit/remove
   const onChange = useCallback((e) => {
 
-    const tagifyCleanValue = e.detail.tagify.getCleanValue();
-
+    // const tagifyCleanValue = e.detail.tagify.getCleanValue();
+    console.log(JSON.parse(e.target.value))
+    const tagifyCleanValue = JSON.parse(e.target.value)
     let tagList = tagifyCleanValue.reduce((prev, cur) => {
       prev.push(cur.value);
       return prev;
