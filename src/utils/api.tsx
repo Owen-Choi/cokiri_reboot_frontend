@@ -14,10 +14,12 @@ export const injectStore = _store => {
 
 const Api = axios.create({
     // baseURL: "https://f3f-cokiri.site/",
-    baseURL: process.env.REACT_APP_BACKEND_LOCAL_URL,
+    // baseURL: process.env.REACT_APP_BACKEND_LOCAL_URL,
+    baseURL: process.env.REACT_APP_BACKEND_URL,
 });
 
-const base = process.env.REACT_APP_BACKEND_LOCAL_URL;
+// const base = process.env.REACT_APP_BACKEND_LOCAL_URL;
+const base = process.env.REACT_APP_BACKEND_URL;
 
 const sourceRequest: any = {};
 

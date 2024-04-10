@@ -44,7 +44,8 @@ const Login = () => {
     const [userInfo, setuserInfo] = useState<UserInfo>(null);
     const [postResult, setPostResult] = useState(null);
     const navigate = useNavigate();
-    const base = process.env.REACT_APP_BACKEND_LOCAL_URL;
+    // const base = process.env.REACT_APP_BACKEND_LOCAL_URL;
+    const base = process.env.REACT_APP_BACKEND_URL;
 
     const signInClick = () => {
         navigate(`/signup`)
