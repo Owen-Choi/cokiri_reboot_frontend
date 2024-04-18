@@ -86,7 +86,7 @@ const SignUp = () => {
   //이메일 중복 체크 함수
   async function CheckEmailDuplicated(email: object) {
     try {
-      const res = await axios.post('http://localhost:8080/auth/check-email', email);
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL+'/auth/check-email', email);
       console.log(res);
       const result = res.data;
       const duplicated = result.exists;
@@ -120,7 +120,7 @@ const SignUp = () => {
   async function CheckNickNameDuplicated(nickname: object) {
 
     try {
-      const res = await axios.post('http://localhost:8080/auth/check-nickname', nickname);
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL+'/auth/check-nickname', nickname);
       const result = res.data;
       const duplicated = result.exists;
 
@@ -152,7 +152,7 @@ const SignUp = () => {
   async function CheckPhoneNumberDuplicated(phoneNumber: object) {
 
     try {
-      const res = await axios.post('http://localhost:8080/auth/check-phone', phoneNumber);
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL+'/auth/check-phone', phoneNumber);
       const result = res.data;
       const duplicated = result.exists;
 
@@ -362,7 +362,7 @@ const SignUp = () => {
 
   async function MailConfirm(jsonEmail: object) {
     try {
-      const res = await axios.post('http://localhost:8080/auth/mailConfirm', jsonEmail);
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL+'/auth/mailConfirm', jsonEmail);
 
       const result = {
         status: res.status + '-' + res.statusText,
